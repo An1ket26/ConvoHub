@@ -2,6 +2,8 @@ const authSocket=require('./middleware/authSocket')
 const newConnectionHandler=require('./socketHandlers/newConnectionHandlers')
 const disconnectHandler=require('./socketHandlers/disconnectHandler')
 const serverStore=require('./serverStore')
+const directMessageHandler=require('./socketHandlers/directMessageHandler')
+const directChatHistoryHandler=require('./socketHandlers/directChatHistoryHandler')
 const registerSocketServer=(server)=>{
     const io=require('socket.io')(server,{
         cors:{
@@ -28,6 +30,15 @@ const registerSocketServer=(server)=>{
 
         newConnectionHandler(socket,io); 
         emitOnlineUsers();
+
+        socket.on('direct-message',(data)=>{
+            directMessageHandler(socket,data);
+        })
+
+        socket.on('direct-chat-history',(data)=>{
+            // console.log("aaya")
+            directChatHistoryHandler(socket,data);
+        })
 
         socket.on('disconnect',()=>{
             disconnectHandler(socket);
