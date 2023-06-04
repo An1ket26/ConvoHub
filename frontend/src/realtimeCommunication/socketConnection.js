@@ -55,3 +55,7 @@ export const getDirectChatHistory=(data)=>{
   // console.log(data);
   socket.emit('direct-chat-history',data);
 }
+
+export const createNewRoom=()=>{
+  socket.emit('room-create');
+}

@@ -4,6 +4,10 @@ const disconnectHandler=require('./socketHandlers/disconnectHandler')
 const serverStore=require('./serverStore')
 const directMessageHandler=require('./socketHandlers/directMessageHandler')
 const directChatHistoryHandler=require('./socketHandlers/directChatHistoryHandler')
+const roomCreatehandler=require('./socketHandlers/roomCreatehandler');
+
+
+
 const registerSocketServer=(server)=>{
     const io=require('socket.io')(server,{
         cors:{
@@ -38,6 +42,10 @@ const registerSocketServer=(server)=>{
         socket.on('direct-chat-history',(data)=>{
             // console.log("aaya")
             directChatHistoryHandler(socket,data);
+        })
+
+        socket.on('room-create',()=>{
+            roomCreatehandler(socket);
         })
 
         socket.on('disconnect',()=>{
