@@ -4,6 +4,8 @@ import ScreenShareButton from "./ScreenShareButton";
 import MicButton from "./MicButton";
 import CloseRoomButton from "./CloseRoomButton";
 import CameraButton from "./CameraButton";
+import { connect } from "react-redux";
+import { getActions } from "../../../store/actions/roomActions";
 
 const MainContainer = styled("div")({
   height: "15%",
@@ -16,15 +18,28 @@ const MainContainer = styled("div")({
   justifyContent: "center",
 });
 
-const RoomButtons = () => {
+const RoomButtons = (props) => {
+  const {localStream} =props;
   return (
     <MainContainer>
-      <MicButton />
-      <CameraButton />
-      <ScreenShareButton />
+      <MicButton localStream={localStream} />
+      <CameraButton localStream={localStream} />
+      <ScreenShareButton {...props} />
       <CloseRoomButton />
     </MainContainer>
   );
 };
 
-export default RoomButtons;
+const mapStoreToProps=({room})=>{
+  return{
+    ...room,
+  }
+}
+
+const mapActionsToProps=(dispatch)=>{
+  return{
+    ...getActions(dispatch)
+  }
+}
+
+export default connect(mapStoreToProps,mapActionsToProps)(RoomButtons);
