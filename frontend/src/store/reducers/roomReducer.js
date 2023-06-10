@@ -30,6 +30,21 @@ const reducer=(state=initState,action)=>{
                 ...state,
                 activeRooms:action.activeRooms
             }
+        case roomActions.SET_LOCAL_STREAM:
+            return{
+                ...state,
+                localStream:action.localStream
+            }
+        case roomActions.SET_AUDIO_ONLY:
+            return{
+                ...state,
+                audioOnly:action.audioOnly
+            }
+        case roomActions.SET_REMOTE_STREAMS:
+            return{
+                ...state,
+                remoteStreams:action.remoteStreams
+            }
         default:
             return{
                 ...state

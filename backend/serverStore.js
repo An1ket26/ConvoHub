@@ -60,7 +60,7 @@ const addNewActiveRoom = (userId, socketId) => {
     roomId:uuidv4(),
   };
   activeRooms = [...activeRooms,newActiveRoom];
-  console.log(activeRooms);
+  // console.log(activeRooms);
 
   return newActiveRoom;
 
@@ -68,6 +68,43 @@ const addNewActiveRoom = (userId, socketId) => {
 
 const getActiveRooms=()=>{
     return [...activeRooms];
+}
+
+const getActiveRoom=(roomId)=>{
+  const activeRoom=activeRooms.find(activeRoom=>activeRoom.roomId===roomId);
+  return {
+    ...activeRoom
+  };
+}
+
+const joinActiveRoom=(roomId,newParticipant)=>{
+  const room=activeRooms.find(room=>room.roomId===roomId);
+  activeRooms=activeRooms.filter((room)=>room.roomId!==roomId);
+
+  const updatedRoom={
+    ...room,
+    participants:[...room.participants,newParticipant]
+  };
+  activeRooms.push(updatedRoom);
+  console.log(activeRooms);
+}
+
+const leaveActiveRoom=(roomId,participantSocketId)=>{
+  console.log("deleting")
+  console.log(roomId);
+  const activeRoom=activeRooms.find(room=>room.roomId===roomId);
+  if(activeRoom)
+  {
+    const copyOfActiveRoom={...activeRoom};
+    copyOfActiveRoom.participants=copyOfActiveRoom.participants.filter(participant=>participant.socketId!==participantSocketId);
+    activeRooms=activeRooms.filter((room)=>room.roomId!==roomId);
+    if(copyOfActiveRoom.participants.length>0)
+    {
+      activeRooms.push(copyOfActiveRoom);
+    }
+  }
+  
+  console.log(activeRooms);
 }
 
 module.exports = {
@@ -79,4 +116,7 @@ module.exports = {
   getOnlineUsers,
   addNewActiveRoom,
   getActiveRooms,
+  getActiveRoom,
+  joinActiveRoom,
+  leaveActiveRoom,
 };
