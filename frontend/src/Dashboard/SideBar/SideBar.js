@@ -16,8 +16,8 @@ const MainContainer = styled("div")({
 const SideBar = ({activeRooms,isUserInRoom}) => {
   return (
     <MainContainer>
-      <CreateRoomButton />
       <MainPageButton />
+      <CreateRoomButton isUserInRoom={isUserInRoom} />
       {activeRooms.map((room)=>(
         <ActiveRoomButton
           roomId={room.roomId}
